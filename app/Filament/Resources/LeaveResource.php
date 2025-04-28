@@ -8,6 +8,7 @@ use App\Models\Leave;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -35,7 +36,7 @@ class LeaveResource extends Resource
                     ->required()
                     ->columnSpanFull(),
                 Forms\Components\Select::make('leave_type_id')
-                    ->relationship('leave_type', 'name')
+                    ->relationship('leaveType', 'name')
                     ->required(),
             ]);
     }
@@ -44,32 +45,37 @@ class LeaveResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user_id')
-                    ->numeric()
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('user.name')
+                    ->label('Nama Pegawai')
+                    ->icon('heroicon-o-user')
+                    ->weight(FontWeight::Bold),
                 Tables\Columns\TextColumn::make('start_date')
-                    ->date()
-                    ->sortable(),
+                    ->label('Tanggal Mulai')
+                    ->icon('heroicon-o-calendar')
+                    ->date(),
                 Tables\Columns\TextColumn::make('end_date')
-                    ->date()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('leave_type.name')
-                    ->numeric()
-                    ->sortable(),
+                    ->label('Tanggal Selesai')
+                    ->icon('heroicon-o-calendar')
+                    ->date(),
+                Tables\Columns\TextColumn::make('leaveType.name')
+                    ->label('Tipe Cuti'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
-                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
-                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('edit')
+                    ->icon('heroicon-o-pencil'),
+                Tables\Actions\Action::make('delete')
+                    ->icon('heroicon-o-trash')
+                    ->color('danger')
+                    ->requiresConfirmation(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

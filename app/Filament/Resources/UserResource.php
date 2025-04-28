@@ -8,6 +8,7 @@ use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -56,7 +57,13 @@ class UserResource extends Resource
                     ->label('No. Telepon'),
                 FileUpload::make('photo')
                     ->required()
-                    ->label('Foto Pegawai')
+                    ->label('Foto Pegawai'),
+                Select::make('roles')
+                    ->relationship('roles', 'name')
+                    ->multiple()
+                    ->preload()
+                    ->label('Roles'),
+
             ]);
     }
 
@@ -67,6 +74,8 @@ class UserResource extends Resource
                 ImageColumn::make('photo')
                     ->label('Foto Pegawai'),
                 TextColumn::make('name')->label('Nama Pegawai'),
+                TextColumn::make('roles.name')
+                    ->label('Roles'),
                 TextColumn::make('email')->label('Email'),
                 TextColumn::make('phone')->label('No. Telepon'),
                 TextColumn::make('address')->label('Alamat'),
