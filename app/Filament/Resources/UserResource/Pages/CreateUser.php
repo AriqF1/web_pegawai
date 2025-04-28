@@ -9,4 +9,9 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateUser extends CreateRecord
 {
     protected static string $resource = UserResource::class;
+
+    public function beforeCreate(): void
+    {
+        $this->record->password = bcrypt($this->record->password);
+    }
 }
