@@ -9,6 +9,7 @@ use Filament\Resources\Pages\EditRecord;
 class EditLeaveApproval extends EditRecord
 {
     protected static string $resource = LeaveApprovalResource::class;
+    protected static ?string $title = 'Edit Persetujuan Cuti';
 
     protected function getHeaderActions(): array
     {

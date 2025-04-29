@@ -9,6 +9,7 @@ use Filament\Resources\Pages\ListRecords;
 class ListLeaveApprovals extends ListRecords
 {
     protected static string $resource = LeaveApprovalResource::class;
+    protected static ?string $title = 'Persetujuan Cuti';
 
     protected function getHeaderActions(): array
     {
