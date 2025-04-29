@@ -1,0 +1,14 @@
+.fi-sidebar-item .fi-sidebar-item-button {
+    padding: 1rem;
+}
+
+.fi-sidebar-item.fi-active,
+.fi-sidebar-item.fi-sidebar-item-active {
+    background-color: #fff8e1; /* contoh amber terang */
+    font-weight: bold;
+    color: #ff9800; /* amber */
+}
+
+.fi-sidebar-item.fi-active svg {
+    color: #ff9800;
+}
