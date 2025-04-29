@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
+use Filament\Tables\Actions\DeleteAction;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
@@ -15,6 +16,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteBulkAction;
@@ -28,6 +30,7 @@ class UserResource extends Resource
     protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationLabel = 'Pegawai';
 
     public static function form(Form $form): Form
     {
@@ -72,23 +75,51 @@ class UserResource extends Resource
         return $table
             ->columns([
                 ImageColumn::make('photo')
-                    ->label('Foto Pegawai'),
-                TextColumn::make('name')->label('Nama Pegawai'),
-                TextColumn::make('roles.name')
-                    ->label('Roles'),
-                TextColumn::make('email')->label('Email'),
-                TextColumn::make('phone')->label('No. Telepon'),
-                TextColumn::make('address')->label('Alamat'),
-                TextColumn::make('joining_date')
-                    ->label('Tanggal Bergabung')
-                    ->date(),
+                    ->label('Foto')
+                    ->circular()
+                    ->height(50)
+                    ->width(50)
+                    ->defaultImageUrl(url('/images/default-avatar.png')),
 
+                TextColumn::make('name')
+                    ->label('Nama Pegawai')
+                    ->searchable()
+                    ->sortable(),
+
+                BadgeColumn::make('roles.name')
+                    ->label('Role')
+                    ->colors([
+                        'Admin' => 'danger',
+                        'HRD' => 'warning',
+                        'Staff' => 'info',
+                        'default' => 'gray',
+                    ])
+                    ->searchable(),
+                TextColumn::make('email')
+                    ->label('Email')
+                    ->searchable()
+                    ->copyable(),
+
+                TextColumn::make('phone')
+                    ->label('No. Telepon')
+                    ->toggleable()
+                    ->searchable(),
+
+                TextColumn::make('address')
+                    ->label('Alamat')
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+                TextColumn::make('joining_date')
+                    ->label('Bergabung')
+                    ->date('d M Y')
+                    ->sortable(),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 EditAction::make(),
+                DeleteAction::make(),
             ])
             ->bulkActions([
                 BulkActionGroup::make([

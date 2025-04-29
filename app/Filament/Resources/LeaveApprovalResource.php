@@ -18,6 +18,9 @@ class LeaveApprovalResource extends Resource
     protected static ?string $model = LeaveApproval::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationLabel = 'Persetujuan Cuti';
+    protected static ?string $navigationGroup = 'Manajemen Karyawan';
+
 
     public static function form(Form $form): Form
     {
@@ -62,8 +65,7 @@ class LeaveApprovalResource extends Resource
                 //
             ])
             ->actions([
-                // Tables\Actions\ViewAction::make(),
-                // Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -20,6 +20,8 @@ class LeaveResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-document';
     protected static ?string $navigationLabel = 'Cuti Pegawai';
+    protected static ?string $navigationGroup = 'Manajemen Karyawan';
+
 
     public static function form(Form $form): Form
     {
@@ -27,15 +29,20 @@ class LeaveResource extends Resource
             ->schema([
                 Forms\Components\Select::make('user_id')
                     ->required()
+                    ->helperText('pilih pegawai')
                     ->relationship('user', 'name'),
                 Forms\Components\DatePicker::make('start_date')
+                    ->helperText('isikan tanggal mulai cuti')
                     ->required(),
                 Forms\Components\DatePicker::make('end_date')
+                    ->helperText('isikan tanggal berakhir cuti')
                     ->required(),
                 Forms\Components\Textarea::make('reason')
+                    ->helperText('isikan alasan cuti')
                     ->required()
                     ->columnSpanFull(),
                 Forms\Components\Select::make('leave_type_id')
+                    ->helperText('pilih tipe cuti')
                     ->relationship('leaveType', 'name')
                     ->required(),
             ]);
@@ -70,12 +77,16 @@ class LeaveResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\Action::make('edit')
+                Tables\Actions\EditAction::make()
                     ->icon('heroicon-o-pencil'),
                 Tables\Actions\Action::make('delete')
                     ->icon('heroicon-o-trash')
                     ->color('danger')
-                    ->requiresConfirmation(),
+                    ->requiresConfirmation()
+                    ->modalHeading('Hapus Cuti Pegawai')
+                    ->modalDescription('Apakah Anda yakin ingin menghapus cuti pegawai ini?')
+                    ->modalSubmitActionLabel('Hapus')
+                    ->action(fn($record) => $record->delete()),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

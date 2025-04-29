@@ -19,6 +19,7 @@ class LeaveTypeResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-queue-list';
     protected static ?string $navigationLabel = 'Tipe Cuti';
+    protected static ?string $navigationGroup = 'Manajemen Karyawan';
 
     public static function form(Form $form): Form
     {
@@ -43,10 +44,13 @@ class LeaveTypeResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Nama Cuti')
+                    ->icon('heroicon-o-document-text')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('max_days')
-                    ->numeric()
-                    ->sortable(),
+                    ->label('Maksimal Dalam Setahun')
+                    ->icon('heroicon-o-calendar')
+                    ->numeric(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
