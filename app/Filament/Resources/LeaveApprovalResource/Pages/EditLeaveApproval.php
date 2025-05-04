@@ -5,6 +5,7 @@ namespace App\Filament\Resources\LeaveApprovalResource\Pages;
 use App\Filament\Resources\LeaveApprovalResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Support\Facades\Auth;
 
 class EditLeaveApproval extends EditRecord
 {
@@ -17,5 +18,10 @@ class EditLeaveApproval extends EditRecord
             Actions\ViewAction::make(),
             Actions\DeleteAction::make(),
         ];
+    }
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        $data['approver_id'] = Auth::id();
+        return $data;
     }
 }
