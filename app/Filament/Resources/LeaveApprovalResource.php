@@ -31,8 +31,8 @@ class LeaveApprovalResource extends Resource
                 Forms\Components\TextInput::make('status')
                     ->label('Status Cuti'),
 
-                Forms\Components\Select::make('approver_id')
-                    ->relationship('approver', 'name'),
+                // Forms\Components\Select::make('approver_id')
+                //     ->relationship('approver', 'name'),
                 Forms\Components\Textarea::make('notes')
                     ->columnSpanFull(),
             ]);
@@ -48,9 +48,14 @@ class LeaveApprovalResource extends Resource
                 Tables\Columns\TextColumn::make('leave.user.name')
                     ->label('Nama Pegawai')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('status'),
+                Tables\Columns\TextColumn::make('status')
+                    ->badge()
+                    ->color(fn(string $state): string => match ($state) {
+                        'pending' => 'warning',
+                        'approved' => 'success',
+                        'rejected' => 'danger',
+                    }),
                 Tables\Columns\TextColumn::make('approver.name')
-                    ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -66,6 +71,7 @@ class LeaveApprovalResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
+                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -87,7 +93,7 @@ class LeaveApprovalResource extends Resource
             'index' => Pages\ListLeaveApprovals::route('/'),
             //'create' => Pages\CreateLeaveApproval::route('/create'),
             'view' => Pages\ViewLeaveApproval::route('/{record}'),
-            //'edit' => Pages\EditLeaveApproval::route('/{record}/edit'),
+            'edit' => Pages\EditLeaveApproval::route('/{record}/edit'),
         ];
     }
 }
